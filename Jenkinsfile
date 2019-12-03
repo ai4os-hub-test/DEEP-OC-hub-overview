@@ -37,7 +37,7 @@ pipeline {
 
                     def README_PATH = "_README.md"
                     RESPONSE_CODE = sh(
-                        script: "export README_PATH="${PWD}/${README_PATH}" && \
+                        script: "export README_PATH=\"${PWD}/${README_PATH}\" && \
                         curl -o ${README_PATH} ${README_URL} && \
                         cat ${README_PATH} && \
                         curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
