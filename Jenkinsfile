@@ -34,10 +34,10 @@ pipeline {
                     )               
 
                     sh """
-                       curl -o _README.md ${README_URL};
+                       curl -o _README.md \${README_URL};
                        README_PATH=\"./_README.md\";
-                       RESPONSE_CODE=$(curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL});
-                       echo "[INFO] Received response code: $RESPONSE_CODE";
+                       RESPONSE_CODE=\$(curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT \${TOKEN}\" -X PATCH --data-urlencode full_description@\${README_PATH} \${DOCKER_REPO_URL});
+                       echo "[INFO] Received response code: \$RESPONSE_CODE";
                        """
                 }
             }
