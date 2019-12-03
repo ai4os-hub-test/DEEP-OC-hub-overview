@@ -39,7 +39,7 @@ pipeline {
                     def README_PATH = "${WORKSPACE}/_README.md"
                     sh("curl -o ${README_PATH} ${README_URL}")
                     RESPONSE_CODE = sh(script:
-                        "curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
+                        "curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode \"full_description@${README_PATH}\" ${DOCKER_REPO_URL}",
                         returnStdout: true,
                     )
 
