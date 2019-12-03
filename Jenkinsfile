@@ -21,7 +21,7 @@ pipeline {
                 checkout scm
                 script {
                     def REPO = "deep-oc-dogs_breed_det"    // same REPO for DockerHub and GitHub                    
-                    def ORG = "deephdc"                    // same ORG for DockerHub and GitHub
+                    def ORG = "vykozlov"                    // same ORG for DockerHub and GitHub
                     def URL_HUB = "https://hub.docker.com/v2"
                     def README_URL = "https://raw.githubusercontent.com/${ORG}/${REPO}/master/README.md"
                     def DOCKER_REPO_URL="${URL_HUB}/repositories/${ORG}/${REPO}/"
@@ -34,11 +34,11 @@ pipeline {
                     )               
 
                     sh '''
-                       curl -o _README.md ${README_URL}
-                       README_PATH="./_README.md"
+                       curl -o _README.md "${README_URL}";
+                       README_PATH="./_README.md";
                        //curl -X DELETE -s -H \"Authorization: JWT ${TOKEN}\" \"${URL_HUB}/repositories/${ORG}/${REPO}/tags/${TAG_TO_DELETE}/\"
-                       RESPONSE_CODE=$(curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL})
-                       echo "[INFO] Received response code: $RESPONSE_CODE"
+                       RESPONSE_CODE=$(curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL});
+                       echo "[INFO] Received response code: $RESPONSE_CODE";
                        '''
                 }
             }
