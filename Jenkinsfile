@@ -20,7 +20,7 @@ pipeline {
             steps{
                 checkout scm
                 script {
-                    def REPO = "deep-oc-dogs_breed_det"    // same REPO for DockerHub and GitHub                    
+                    def REPO = "deep-oc-dogs_breed_det"     // same REPO for DockerHub and GitHub                    
                     def ORG = "vykozlov"                    // same ORG for DockerHub and GitHub
                     def URL_HUB = "https://hub.docker.com/v2"
                     def README_URL = "https://raw.githubusercontent.com/${ORG}/${REPO}/master/README.md"
@@ -37,11 +37,9 @@ pipeline {
 
                     def WORKSPACE = pwd()
                     def README_PATH = "${WORKSPACE}/_README.md"
-                    //export README_PATH=\"${PWD}/${README_PATH}\" && \
-                    RESPONSE_CODE = sh(
-                        script: "curl -o ${README_PATH} ${README_URL} && \
-                        cat ${README_PATH} && \
-                        curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
+                    sh("curl -o ${README_PATH} ${README_URL}")
+                    RESPONSE_CODE = sh(script:
+                        "curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
                         returnStdout: true,
                     )
 
