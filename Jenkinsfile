@@ -26,7 +26,7 @@ pipeline {
                     def README_URL = "https://raw.githubusercontent.com/${ORG}/${REPO}/master/README.md"
                     def DOCKER_REPO_URL="${URL_HUB}/repositories/${ORG}/${REPO}/"
 
-                    echo $README_URL
+                    echo "${README_URL}"
 
                     // get Docker Hub Token
                     sh "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 &&  chmod +x ./jq"
