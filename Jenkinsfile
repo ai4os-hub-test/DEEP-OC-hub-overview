@@ -29,17 +29,18 @@ pipeline {
                     echo "${README_URL}"
 
                     // get Docker Hub Token
-                    sh "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 &&  chmod +x ./jq"
+                    sh "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x ./jq"
                     TOKEN = sh(
-                        script: "curl -s -H \"Content-Type: application/json\" -X POST -d '{\"username\": \"${DOCKER_CREDS_USR}\", \"password\": \"${DOCKER_CREDS_PSW}\"}' ${URL_HUB}/users/login/ | ./jq -r .token",
+                        script: "curl -s -H \"Content-Type: application/json\" -X POST -d '{\"username\": \"${DOCKER_CREDS_USR}\", \"password\": \"${DOCKER_CREDS_PSW}\"}' ${URL_HUB}/users/login/ | ./jq -r .token | tr -d '\n\t'",
                         returnStdout: true,
                     )               
 
                     def WORKSPACE = pwd()
                     def README_PATH = "${WORKSPACE}/_README.md"
+                    // download GitHub README.md
                     sh("curl -o ${README_PATH} ${README_URL}")
                     RESPONSE_CODE = sh(script:
-                        "bash curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
+                        "curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL}",
                         returnStdout: true,
                     )
 
