@@ -36,7 +36,6 @@ pipeline {
                     sh """
                        curl -o _README.md ${README_URL};
                        README_PATH=\"./_README.md\";
-                       //curl -X DELETE -s -H \"Authorization: JWT ${TOKEN}\" \"${URL_HUB}/repositories/${ORG}/${REPO}/tags/${TAG_TO_DELETE}/\"
                        RESPONSE_CODE=$(curl -s --write-out %{response_code} --output /dev/null -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_PATH} ${DOCKER_REPO_URL});
                        echo "[INFO] Received response code: $RESPONSE_CODE";
                        """
